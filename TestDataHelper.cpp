@@ -18,7 +18,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
     std::uniform_int_distribution dist_cost(1, 20);
     std::uniform_int_distribution dist_time(0, 50);
 
-    // Generowanie węzłów
+    // Generating nodes
     for (int i = 1; i <= numberOfNodes; ++i) {
         const int x = dist_coord(rng);
         const int y = dist_coord(rng);
@@ -30,10 +30,10 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
         nodes.push_back(node);
     }
 
-    // Generowanie krawędzi
+    // Generating edges
     for (size_t i = 0; i < nodes.size(); ++i) {
         for (size_t j = i + 1; j < nodes.size(); ++j) {
-            if (rng() % 10 < 7) {  // 70% szans na istnienie krawędzi
+            if (rng() % 10 < 7) {  // 70% possibility for edge existence
                 const int cost = dist_cost(rng);
                 auto* edge = new Edge(nodes[i], nodes[j], cost, false);
                 edges.push_back(edge);
@@ -41,7 +41,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
         }
     }
 
-    // Tworzenie obiektu JSON
+    // Creating json object
     json j;
 
     for (const auto& node : nodes) {
@@ -60,7 +60,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
         });
     }
 
-    // Zapis do pliku JSON
+    // Saving to JSON file
     std::ofstream file(fileName);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file for writing: " << fileName << std::endl;
@@ -74,14 +74,14 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
 void TestDataHelper::loadData(const std::string& fileName, Graph& graph) {
     std::ifstream file(fileName);
     if (!file) {
-        std::cerr << "Nie można otworzyć pliku JSON: " << fileName << std::endl;
+        std::cerr << "Error when opening JSON file: " << fileName << std::endl;
         return;
     }
 
     json data;
     file >> data;
 
-    // Wczytanie węzłów
+    // Loading nodes
     for (const auto& nodeData : data[DataLabels::nodes]) {
         const int id = nodeData[DataLabels::id];
         const int x = nodeData[DataLabels::x];
@@ -91,13 +91,13 @@ void TestDataHelper::loadData(const std::string& fileName, Graph& graph) {
         graph.addNode(node);
     }
 
-    // Wczytanie krawędzi
+    // Loading edges
     for (const auto& edgeData : data[DataLabels::edges]) {
         const int start = edgeData[DataLabels::start];
         const int end = edgeData[DataLabels::end];
         const int cost = edgeData[DataLabels::cost];
 
-        // Szukamy węzłów na podstawie ich ID
+        // Searching for edges based on it's ids
         Node* startNode = nullptr;
         Node* endNode = nullptr;
         for (const auto node : graph.nodes) {

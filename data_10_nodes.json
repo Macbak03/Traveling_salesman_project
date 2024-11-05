@@ -1,0 +1,261 @@
+{
+    "edges": [
+        {
+            "cost": 13,
+            "end": 2,
+            "start": 1
+        },
+        {
+            "cost": 7,
+            "end": 3,
+            "start": 1
+        },
+        {
+            "cost": 4,
+            "end": 4,
+            "start": 1
+        },
+        {
+            "cost": 12,
+            "end": 5,
+            "start": 1
+        },
+        {
+            "cost": 10,
+            "end": 6,
+            "start": 1
+        },
+        {
+            "cost": 15,
+            "end": 7,
+            "start": 1
+        },
+        {
+            "cost": 10,
+            "end": 8,
+            "start": 1
+        },
+        {
+            "cost": 20,
+            "end": 9,
+            "start": 1
+        },
+        {
+            "cost": 9,
+            "end": 3,
+            "start": 2
+        },
+        {
+            "cost": 1,
+            "end": 5,
+            "start": 2
+        },
+        {
+            "cost": 15,
+            "end": 6,
+            "start": 2
+        },
+        {
+            "cost": 12,
+            "end": 7,
+            "start": 2
+        },
+        {
+            "cost": 14,
+            "end": 8,
+            "start": 2
+        },
+        {
+            "cost": 7,
+            "end": 9,
+            "start": 2
+        },
+        {
+            "cost": 1,
+            "end": 10,
+            "start": 2
+        },
+        {
+            "cost": 18,
+            "end": 4,
+            "start": 3
+        },
+        {
+            "cost": 11,
+            "end": 5,
+            "start": 3
+        },
+        {
+            "cost": 15,
+            "end": 7,
+            "start": 3
+        },
+        {
+            "cost": 15,
+            "end": 9,
+            "start": 3
+        },
+        {
+            "cost": 9,
+            "end": 8,
+            "start": 4
+        },
+        {
+            "cost": 20,
+            "end": 9,
+            "start": 4
+        },
+        {
+            "cost": 13,
+            "end": 10,
+            "start": 4
+        },
+        {
+            "cost": 2,
+            "end": 7,
+            "start": 5
+        },
+        {
+            "cost": 16,
+            "end": 8,
+            "start": 5
+        },
+        {
+            "cost": 17,
+            "end": 10,
+            "start": 5
+        },
+        {
+            "cost": 2,
+            "end": 7,
+            "start": 6
+        },
+        {
+            "cost": 20,
+            "end": 8,
+            "start": 6
+        },
+        {
+            "cost": 16,
+            "end": 9,
+            "start": 6
+        },
+        {
+            "cost": 1,
+            "end": 10,
+            "start": 6
+        },
+        {
+            "cost": 2,
+            "end": 8,
+            "start": 7
+        },
+        {
+            "cost": 17,
+            "end": 9,
+            "start": 7
+        },
+        {
+            "cost": 9,
+            "end": 10,
+            "start": 8
+        },
+        {
+            "cost": 10,
+            "end": 10,
+            "start": 9
+        }
+    ],
+    "nodes": [
+        {
+            "id": 1,
+            "time_window": [
+                0,
+                24
+            ],
+            "x": 39,
+            "y": 14
+        },
+        {
+            "id": 2,
+            "time_window": [
+                10,
+                49
+            ],
+            "x": 95,
+            "y": 51
+        },
+        {
+            "id": 3,
+            "time_window": [
+                1,
+                11
+            ],
+            "x": 38,
+            "y": 59
+        },
+        {
+            "id": 4,
+            "time_window": [
+                17,
+                35
+            ],
+            "x": 47,
+            "y": 91
+        },
+        {
+            "id": 5,
+            "time_window": [
+                11,
+                37
+            ],
+            "x": 29,
+            "y": 58
+        },
+        {
+            "id": 6,
+            "time_window": [
+                28,
+                30
+            ],
+            "x": 21,
+            "y": 18
+        },
+        {
+            "id": 7,
+            "time_window": [
+                25,
+                44
+            ],
+            "x": 19,
+            "y": 73
+        },
+        {
+            "id": 8,
+            "time_window": [
+                17,
+                48
+            ],
+            "x": 38,
+            "y": 50
+        },
+        {
+            "id": 9,
+            "time_window": [
+                19,
+                22
+            ],
+            "x": 80,
+            "y": 37
+        },
+        {
+            "id": 10,
+            "time_window": [
+                20,
+                41
+            ],
+            "x": 33,
+            "y": 21
+        }
+    ]
+}

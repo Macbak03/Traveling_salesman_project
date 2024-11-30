@@ -19,7 +19,7 @@ void Graph::addEdge(Edge* edge) {
 std::vector<Node*> Graph::getNeighbors(const Node* node) const {
     std::vector<Node*> neighbors;
     for (const auto edge : edges) {
-        if (edge->start == node && !edge->blocked) {
+        if (edge->start == node) {
             neighbors.push_back(edge->end);
         }
     }

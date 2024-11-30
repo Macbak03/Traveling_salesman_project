@@ -15,8 +15,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
     std::vector<Edge*> edges;
     std::mt19937 rng(time(nullptr));
     std::uniform_int_distribution dist_coord(0, 100);
-    std::uniform_int_distribution dist_cost(1, 20);
-    std::uniform_int_distribution dist_time(0, 50);
+    std::uniform_int_distribution dist_time(0, 200);
 
     // Generating nodes
     for (int i = 1; i <= numberOfNodes; ++i) {
@@ -34,8 +33,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
     for (size_t i = 0; i < nodes.size(); ++i) {
         for (size_t j = i + 1; j < nodes.size(); ++j) {
             if (rng() % 10 < 7) {  // 70% possibility for edge existence
-                const int cost = dist_cost(rng);
-                auto* edge = new Edge(nodes[i], nodes[j], cost, false);
+                auto* edge = new Edge(nodes[i], nodes[j]);
                 edges.push_back(edge);
             }
         }

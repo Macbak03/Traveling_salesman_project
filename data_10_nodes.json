@@ -1,167 +1,137 @@
 {
     "edges": [
         {
-            "cost": 13,
+            "cost": 75,
             "end": 2,
             "start": 1
         },
         {
-            "cost": 7,
+            "cost": 55,
             "end": 3,
             "start": 1
         },
         {
-            "cost": 4,
+            "cost": 16,
             "end": 4,
             "start": 1
         },
         {
-            "cost": 12,
+            "cost": 45,
             "end": 5,
             "start": 1
         },
         {
-            "cost": 10,
-            "end": 6,
-            "start": 1
-        },
-        {
-            "cost": 15,
+            "cost": 55,
             "end": 7,
             "start": 1
-        },
-        {
-            "cost": 10,
-            "end": 8,
-            "start": 1
-        },
-        {
-            "cost": 20,
-            "end": 9,
-            "start": 1
-        },
-        {
-            "cost": 9,
-            "end": 3,
-            "start": 2
-        },
-        {
-            "cost": 1,
-            "end": 5,
-            "start": 2
-        },
-        {
-            "cost": 15,
-            "end": 6,
-            "start": 2
-        },
-        {
-            "cost": 12,
-            "end": 7,
-            "start": 2
         },
         {
             "cost": 14,
             "end": 8,
+            "start": 1
+        },
+        {
+            "cost": 92,
+            "end": 10,
+            "start": 1
+        },
+        {
+            "cost": 34,
+            "end": 3,
             "start": 2
         },
         {
-            "cost": 7,
+            "cost": 11,
+            "end": 6,
+            "start": 2
+        },
+        {
+            "cost": 33,
+            "end": 7,
+            "start": 2
+        },
+        {
+            "cost": 73,
+            "end": 8,
+            "start": 2
+        },
+        {
+            "cost": 45,
             "end": 9,
             "start": 2
         },
         {
-            "cost": 1,
+            "cost": 51,
             "end": 10,
             "start": 2
         },
         {
-            "cost": 18,
+            "cost": 62,
             "end": 4,
             "start": 3
         },
         {
-            "cost": 11,
+            "cost": 73,
             "end": 5,
             "start": 3
         },
         {
-            "cost": 15,
-            "end": 7,
+            "cost": 80,
+            "end": 10,
             "start": 3
         },
         {
-            "cost": 15,
-            "end": 9,
-            "start": 3
-        },
-        {
-            "cost": 9,
-            "end": 8,
+            "cost": 30,
+            "end": 5,
             "start": 4
         },
         {
-            "cost": 20,
-            "end": 9,
-            "start": 4
-        },
-        {
-            "cost": 13,
-            "end": 10,
-            "start": 4
-        },
-        {
-            "cost": 2,
+            "cost": 62,
             "end": 7,
-            "start": 5
+            "start": 4
         },
         {
-            "cost": 16,
+            "cost": 31,
             "end": 8,
             "start": 5
         },
         {
-            "cost": 17,
-            "end": 10,
+            "cost": 79,
+            "end": 9,
             "start": 5
         },
         {
-            "cost": 2,
-            "end": 7,
-            "start": 6
-        },
-        {
-            "cost": 20,
-            "end": 8,
-            "start": 6
-        },
-        {
-            "cost": 16,
+            "cost": 37,
             "end": 9,
             "start": 6
         },
         {
-            "cost": 1,
+            "cost": 63,
             "end": 10,
             "start": 6
         },
         {
-            "cost": 2,
+            "cost": 60,
             "end": 8,
             "start": 7
         },
         {
-            "cost": 17,
+            "cost": 12,
             "end": 9,
             "start": 7
         },
         {
-            "cost": 9,
+            "cost": 62,
+            "end": 9,
+            "start": 8
+        },
+        {
+            "cost": 82,
             "end": 10,
             "start": 8
         },
         {
-            "cost": 10,
+            "cost": 90,
             "end": 10,
             "start": 9
         }
@@ -170,92 +140,92 @@
         {
             "id": 1,
             "time_window": [
-                0,
-                24
+                31,
+                173
             ],
-            "x": 39,
-            "y": 14
+            "x": 71,
+            "y": 5
         },
         {
             "id": 2,
             "time_window": [
-                10,
-                49
+                65,
+                108
             ],
-            "x": 95,
-            "y": 51
+            "x": 34,
+            "y": 71
         },
         {
             "id": 3,
             "time_window": [
-                1,
-                11
+                112,
+                178
             ],
-            "x": 38,
-            "y": 59
+            "x": 26,
+            "y": 37
         },
         {
             "id": 4,
             "time_window": [
-                17,
-                35
+                98,
+                118
             ],
-            "x": 47,
-            "y": 91
+            "x": 84,
+            "y": 15
         },
         {
             "id": 5,
             "time_window": [
-                11,
-                37
+                18,
+                142
             ],
-            "x": 29,
-            "y": 58
+            "x": 99,
+            "y": 41
         },
         {
             "id": 6,
             "time_window": [
-                28,
-                30
+                5,
+                116
             ],
-            "x": 21,
-            "y": 18
+            "x": 25,
+            "y": 64
         },
         {
             "id": 7,
             "time_window": [
-                25,
-                44
+                128,
+                145
             ],
-            "x": 19,
-            "y": 73
+            "x": 26,
+            "y": 38
         },
         {
             "id": 8,
             "time_window": [
-                17,
-                48
+                146,
+                173
             ],
-            "x": 38,
-            "y": 50
+            "x": 82,
+            "y": 15
         },
         {
             "id": 9,
             "time_window": [
-                19,
-                22
+                71,
+                113
             ],
-            "x": 80,
-            "y": 37
+            "x": 21,
+            "y": 27
         },
         {
             "id": 10,
             "time_window": [
-                20,
-                41
+                0,
+                154
             ],
-            "x": 33,
-            "y": 21
+            "x": 79,
+            "y": 97
         }
     ]
 }

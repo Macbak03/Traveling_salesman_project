@@ -13,4 +13,6 @@ add_executable(traveling_salesman_project main.cpp
         Graph.cpp
         Graph.h
         TestDataHelper.cpp
-        TestDataHelper.h)
+        TestDataHelper.h
+        Greedy.cpp
+        Greedy.h)

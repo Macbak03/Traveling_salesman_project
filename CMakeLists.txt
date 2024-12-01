@@ -15,4 +15,9 @@ add_executable(traveling_salesman_project main.cpp
         TestDataHelper.cpp
         TestDataHelper.h
         Greedy.cpp
-        Greedy.h)
+        Greedy.h
+        BruteForce.cpp
+        BruteForce.h
+        Algorithm.cpp
+        Algorithm.cpp
+        Algorithm.h)

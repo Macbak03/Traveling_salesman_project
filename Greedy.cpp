@@ -8,17 +8,9 @@
 #include <iomanip>
 #include <random>
 
-Greedy::Greedy(Graph* graph): graph(graph){}
-
 std::vector<Node*> Greedy::findSolution(Node* startNode, bool randomized) const {
     auto tour = performTour(startNode, randomized);
     return tour;
-}
-
-int Greedy::calculateDistance(const Node* from, const Node* to) {
-    const int x = from->x - to->x;
-    const int y = from->y - to->y;
-    return static_cast<int>(std::sqrt(x*x + y*y));
 }
 
 std::vector<std::pair<Node*, int>> Greedy::buildCandidateList(const Node* currentNode, const int currentTime) const {
@@ -62,7 +54,7 @@ std::vector<std::pair<Node*, int>> Greedy::buildCandidateList(const Node* curren
                   << ", Arrival: " << arrivalTime
                   << ", Time Window: [" << neighbor->timeWindow.start << ", " << neighbor->timeWindow.end << "]"
                   << ", Waiting time: " << waitTime
-                  << ", total cost: " << waitTime + travelCost << ")";
+                  << ", total totalTime: " << waitTime + travelCost << ")";
 
         if (!isBlocked && inTimeWindow) {
             candidateNodes.emplace_back(neighbor, travelCost + waitTime);
@@ -86,7 +78,7 @@ Node* Greedy::selectGreedyRandomized(const std::vector<std::pair<Node*, int>>& c
     if (candidateNodes.empty()) return nullptr;
     std::mt19937 rng(std::random_device{}());
 
-    // Sort by cost to get the top candidates
+    // Sort by totalTime to get the top candidates
     std::vector<std::pair<Node*, int>> sortedCandidates = candidateNodes;
     std::ranges::sort(sortedCandidates,
                       [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });

@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "TestDataHelper.h"
 #include "Greedy.h"
+#include "BruteForce.h"
 #include <iostream>
 
 int main() {
@@ -12,13 +13,23 @@ int main() {
     TestDataHelper::loadData(fileName, graph);
     graph.blockRandomEdges(0.3);
 
-    const auto greedy = Greedy(&graph);
-    const auto tour = greedy.findSolution(graph.nodes[0], false);
+   /* const auto greedy = Greedy(&graph);
+    const auto tourGreedy = greedy.findSolution(graph.nodes[0], false);
 
-    std::cout << "Optimal tour:" << std::endl;
-    for (const auto& node : tour) {
+    std::cout << "Optimal tour greedy:" << std::endl;
+    for (const auto& node : tourGreedy) {
         std::cout << "Node ID: " << node->id << " ";
     }
+    std::cout << std::endl;*/
+
+    BruteForce bruteForce = BruteForce(&graph);
+    auto tourBruteForce = bruteForce.findSolution(graph.nodes[0]);
+
+    std::cout << "Optimal tour brute force:" << std::endl;
+    for (const auto& node : tourBruteForce.visitedNodes) {
+        std::cout << "Node ID: " << node->id << " ";
+    }
+    std::cout << std::endl << tourBruteForce.totalTime;
     std::cout << std::endl;
 
 

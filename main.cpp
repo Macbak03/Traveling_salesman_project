@@ -13,17 +13,17 @@ int main() {
     TestDataHelper::loadData(fileName, graph);
     graph.blockRandomEdges(0.3);
 
-   /* const auto greedy = Greedy(&graph);
+    const auto greedy = Greedy(&graph);
     const auto tourGreedy = greedy.findSolution(graph.nodes[0], false);
 
     std::cout << "Optimal tour greedy:" << std::endl;
     for (const auto& node : tourGreedy) {
         std::cout << "Node ID: " << node->id << " ";
     }
-    std::cout << std::endl;*/
+    std::cout << std::endl;
 
-    BruteForce bruteForce = BruteForce(&graph);
-    auto tourBruteForce = bruteForce.findSolution(graph.nodes[0]);
+    auto bruteForce = BruteForce(&graph);
+    const auto tourBruteForce = bruteForce.findSolution(graph.nodes[0]);
 
     std::cout << "Optimal tour brute force:" << std::endl;
     for (const auto& node : tourBruteForce.visitedNodes) {

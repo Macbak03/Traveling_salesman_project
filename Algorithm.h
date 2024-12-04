@@ -9,5 +9,6 @@ protected:
     virtual std::vector<std::pair<Node*, int>> buildCandidateList(const Node* currentNode, int currentTime) const = 0;
 
 public:
+    virtual ~Algorithm() = default;
     explicit Algorithm(Graph* graph);
 };

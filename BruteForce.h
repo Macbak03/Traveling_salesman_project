@@ -14,14 +14,15 @@ struct Outcome {
     }
 };
 
-class BruteForce: public Algorithm {
+class BruteForce final : public Algorithm {
 private:
     Outcome outcome;
     Outcome bestOutcome;
     std::vector<std::pair<Node*, int>> buildCandidateList(const Node* currentNode, int currentTime) const override;
     Outcome performTour(Node* startNode);
-    static Node* searchForUnvisitedNeighbor(const std::vector<std::pair<Node*, int>>& candidateList, std::unordered_set<Node*> visited);
+    static Node* searchForUnvisitedNeighbor(const std::vector<std::pair<Node*, int>>& candidateList, const std::unordered_set<Node*>& visited);
     void checkIfBestOutcome();
+    Edge* findEdge(const Node* startNode, const Node* endNode) const;
 
     const std::string RED = "BLOCKED";
     const std::string YELLOW = "NOT IN TIME";

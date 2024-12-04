@@ -4,6 +4,8 @@
 
 #include <unordered_set>
 #include "BruteForce.h"
+
+#include <algorithm>
 #include <iostream>
 
 BruteForce::BruteForce(Graph *graph) : Algorithm(graph) {
@@ -64,39 +66,82 @@ std::vector<std::pair<Node *, int>> BruteForce::buildCandidateList(const Node *c
 }
 
 Outcome BruteForce::performTour(Node *startNode) {
-    std::unordered_set<Node *> visited;
-    Node *currentNode = startNode;
-    int currentTime = 0;
-    outcome.visitedNodes.push_back(currentNode);
+    std::vector<Node*> nodes = graph->nodes;
+    std::erase(nodes, startNode); // Exclude the start node
+    int tourCount = 1;
+    do {
+        // Initialize variables for this permutation
+        Node* currentNode = startNode;
+        outcome.visitedNodes.push_back(currentNode);
+        int currentTime = 0;
+        int totalCost = 0;
 
-    while (visited.find(startNode) == visited.end()) {
-        // Build the list of candidate nodes
-        auto candidateNodes = buildCandidateList(currentNode, currentTime);
+        bool valid = false;
 
-        // Select the next node based on the chosen strategy
-        Node* nextNode = nullptr;
-        nextNode = searchForUnvisitedNeighbor(candidateNodes, visited);
-        // Move to the next node if a valid one was found
-        if(nextNode) {
+
+
+
+
+        // Traverse nodes in the current permutation order
+        for (Node* nextNode : nodes) {
+            // Check if the edge between currentNode and nextNode is blocked
+            if (const Edge* edge = findEdge(currentNode, nextNode); !edge || edge->blocked) {
+                valid = false;
+                break;
+            }
+
+            // Calculate travel time, arrival time, and waiting time
+            const int travelCost = calculateDistance(currentNode, nextNode);
+            const int arrivalTime = currentTime + travelCost;
+            if (arrivalTime > nextNode->timeWindow.end) {
+                valid = false;
+                break; // Violates the time window
+            }
+            const int waitTime = std::max(0, nextNode->timeWindow.start - arrivalTime);
+            totalCost += travelCost + waitTime;
+
+            // Update current time and current node
+            currentTime = arrivalTime + waitTime;
             outcome.visitedNodes.push_back(nextNode);
-            currentTime = std::max(currentTime + calculateDistance(currentNode, nextNode), nextNode->timeWindow.start);
+            outcome.totalTime = totalCost;
             currentNode = nextNode;
-            outcome.totalTime = currentTime;
-        } else {
-            visited.insert(currentNode);
-            checkIfBestOutcome();
-            currentNode = startNode;
-            currentTime = 0;
         }
 
-    }
+        // Check the final edge back to the startNode
+        if (const Edge* returnEdge = findEdge(currentNode, startNode); !returnEdge || returnEdge->blocked) {
+            valid = false;
+            break;
+        }
+        totalCost += calculateDistance(currentNode, startNode);
+        outcome.totalTime = totalCost;
+
+        //print outcome:
+        std::cout << "tour: " << tourCount++ << std::endl;
+        for (const Node* node : outcome.visitedNodes) {
+            std::cout << node->id << " ";
+        } std::cout << "cost: " << outcome.totalTime << std::endl;
+
+        // If the tour is better than the current best, update the best outcome
+        checkIfBestOutcome();
+
+    } while (std::ranges::next_permutation(nodes).found);
 
     return bestOutcome;
 }
 
-Node* BruteForce::searchForUnvisitedNeighbor(const std::vector<std::pair<Node *, int>>& candidateList, std::unordered_set<Node*> visited) {
+Edge* BruteForce::findEdge(const Node* startNode, const Node* endNode) const {
+    for (auto* edge : graph->edges) {
+        if ((edge->start == startNode && edge->end == endNode) ||
+            (edge->end == startNode && edge->start == endNode)) {
+            return edge;
+            }
+    }
+    return nullptr; // No edge found
+}
+
+Node* BruteForce::searchForUnvisitedNeighbor(const std::vector<std::pair<Node *, int>>& candidateList, const std::unordered_set<Node*>& visited) {
     for(auto neighbor: candidateList) {
-        if(visited.find(neighbor.first) == visited.end()) {
+        if(!visited.contains(neighbor.first)) {
             return neighbor.first;
         }
     }

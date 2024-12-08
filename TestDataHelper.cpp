@@ -15,7 +15,7 @@ void TestDataHelper::generateData(int numberOfNodes, const std::string& fileName
     std::vector<Edge*> edges;
     std::mt19937 rng(time(nullptr));
     std::uniform_int_distribution dist_coord(0, 100);
-    std::uniform_int_distribution dist_time(0, 200);
+    std::uniform_int_distribution dist_time(0, 400);
 
     // Generating nodes
     for (int i = 1; i <= numberOfNodes; ++i) {

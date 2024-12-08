@@ -1,133 +1,148 @@
 #include "Greedy.h"
-
 #include <cmath>
-#include <limits>
 #include <algorithm>
 #include <iostream>
-#include <unordered_set>
 #include <iomanip>
 #include <random>
 
-std::vector<Node*> Greedy::findSolution(Node* startNode, bool randomized) const {
+
+std::vector<NodeInfo> Greedy::findSolution(Node* startNode, const bool randomized) const {
     auto tour = performTour(startNode, randomized);
     return tour;
 }
 
-std::vector<std::pair<Node*, int>> Greedy::buildCandidateList(const Node* currentNode, const int currentTime) const {
-    std::vector<std::pair<Node*, int>> candidateNodes;
+std::vector<NodeInfo> Greedy::buildCandidateList(const Node* currentNode, const int currentTime) const {
+    std::vector<NodeInfo> candidateNodes;
     std::cout << "Current Node: " << currentNode->id << ", Time: " << currentTime << std::endl;
     std::cout << "Potential next nodes:" << std::endl;
 
     for (auto& neighbor : graph->getNeighbors(currentNode)) {
         bool isBlocked = false;
-        bool inTimeWindow = true;
+        const bool isVisited = neighbor->visited;
 
         // Check if edge to neighbor is blocked
-        for (const auto& edge : graph->edges) {
-            if ((edge->start == currentNode && edge->end == neighbor) ||
-                (edge->end == currentNode && edge->start == neighbor)) {
-                if (edge->blocked) {
-                    isBlocked = true;
-                }
-                break;
-                }
+        const Edge* edge = graph->findEdge(currentNode, neighbor);
+        if (!edge) {
+            break;
+        }
+        if (edge->blocked) {
+            isBlocked = true;
         }
 
         // Check time window constraint
         const int travelCost = calculateDistance(currentNode, neighbor);
         const int arrivalTime = currentTime + travelCost;
-        const int waitTime = (neighbor->timeWindow.start > arrivalTime) ? (neighbor->timeWindow.start - arrivalTime) : 0;
 
-        if (arrivalTime > neighbor->timeWindow.end) {
-            inTimeWindow = false;
-        }
+        const bool canVisit = (arrivalTime >= neighbor->timeWindow.start && arrivalTime <= neighbor->timeWindow.end);
 
         std::string color;
         if (isBlocked) {
             color = RED;
-        } else if (!inTimeWindow) {
+        }
+        else if (!canVisit) {
             color = YELLOW;
+        }
+        else if (isVisited) {
+            color = BLUE;
         }
 
         std::cout << color << " - Node " << neighbor->id
-                  << " (Cost: " << travelCost
-                  << ", Arrival: " << arrivalTime
-                  << ", Time Window: [" << neighbor->timeWindow.start << ", " << neighbor->timeWindow.end << "]"
-                  << ", Waiting time: " << waitTime
-                  << ", total totalTime: " << waitTime + travelCost << ")";
+            << " (Cost: " << travelCost
+            << ", Arrival: " << arrivalTime
+            << ", Time Window: [" << neighbor->timeWindow.start << ", " << neighbor->timeWindow.end << "]";
 
-        if (!isBlocked && inTimeWindow) {
-            candidateNodes.emplace_back(neighbor, travelCost + waitTime);
+        if (!isBlocked && !isVisited) {
+            candidateNodes.emplace_back(neighbor, canVisit, travelCost);
             std::cout << " -> Valid choice" << std::endl;
-        } else {
+        }
+        else {
             std::cout << std::endl;
         }
-
     }
 
     return candidateNodes;
 }
 
-Node* Greedy::selectGreedy(const std::vector<std::pair<Node*, int>>& candidateNodes) {
-    if (candidateNodes.empty()) return nullptr;
-    return std::ranges::min_element(candidateNodes,
-                                    [](const auto& lhs, const auto& rhs){ return lhs.second < rhs.second; })->first;
+std::pair<Node*, bool> Greedy::selectGreedy(const std::vector<NodeInfo>& candidateNodes) {
+    // 1. Prefer nodes that can be visited.
+    // 2. Among nodes with the same can visit status, prefer lower cost.
+    const auto candidateToVisit = std::ranges::min_element(candidateNodes,
+    [](const NodeInfo& route1, const NodeInfo& route2) {
+        if (route1.canVisit != route2.canVisit) {
+            return route1.canVisit > route2.canVisit;
+        }
+        return route1.totalCost < route2.totalCost;
+    });
+    if (candidateToVisit != candidateNodes.end()) {
+        return {candidateToVisit->node, candidateToVisit->canVisit};
+    }
+    //return null if no such node found
+    return {nullptr, false};
 }
 
-Node* Greedy::selectGreedyRandomized(const std::vector<std::pair<Node*, int>>& candidateNodes, int candidateListSize) {
-    if (candidateNodes.empty()) return nullptr;
+std::pair<Node*, bool> Greedy::selectGreedyRandomized(const std::vector<NodeInfo>& candidateNodes, int candidateListSize) {
+    if (candidateNodes.empty()) return {nullptr, false};
     std::mt19937 rng(std::random_device{}());
 
-    // Sort by totalTime to get the top candidates
-    std::vector<std::pair<Node*, int>> sortedCandidates = candidateNodes;
-    std::ranges::sort(sortedCandidates,
-                      [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    // Sort candidates by hierarchical priority:
+    // 1. Prefer nodes that can be visited.
+    // 2. Among nodes with the same can visit status, prefer lower cost.
+    std::vector<NodeInfo> sortedCandidates = candidateNodes;
+    std::ranges::sort(sortedCandidates, [](const NodeInfo& a, const NodeInfo& b) {
+        if (a.canVisit != b.canVisit) {
+            return a.canVisit > b.canVisit;
+        }
+        return a.totalCost < b.totalCost;
+    });
 
-    // Choose randomly among the top `candidateListSize` candidates
     const int selectionRange = std::min(static_cast<int>(sortedCandidates.size()), candidateListSize);
     std::uniform_int_distribution<int> dist(0, selectionRange - 1);
-    return sortedCandidates[dist(rng)].first;
+    return {sortedCandidates[dist(rng)].node, sortedCandidates[dist(rng)].canVisit} ;
 }
 
-std::vector<Node*> Greedy::performTour(Node* startNode, bool useRandomized, int candidateListSize) const {
-    std::vector<Node*> tour;
-    std::unordered_set<Node*> visited;
+std::vector<NodeInfo> Greedy::performTour(Node* startNode, bool useRandomized, int candidateListSize) const {
+    std::vector<NodeInfo> route;
     Node* currentNode = startNode;
     int currentTime = 0;
 
-    tour.push_back(currentNode);
-    visited.insert(currentNode);
+    route.emplace_back(currentNode, true, currentTime);
+    currentNode->visited = true;
 
-    while (tour.size() < graph->nodes.size()) {
+    while (route.size() <= graph->nodes.size() + 1) {
         // Build the list of candidate nodes
         auto candidateNodes = buildCandidateList(currentNode, currentTime);
 
         // Select the next node based on the chosen strategy
         Node* nextNode = nullptr;
+        bool canVisit = false;
         if (useRandomized) {
-            nextNode = selectGreedyRandomized(candidateNodes, candidateListSize);
-        } else {
-            nextNode = selectGreedy(candidateNodes);
+            auto [node, visit] = selectGreedyRandomized(candidateNodes, candidateListSize);
+            nextNode = node;
+            canVisit = visit;
+        }
+        else {
+            auto [node, visit] = selectGreedy(candidateNodes);
+            nextNode = node;
+            canVisit = visit;
         }
 
         // Move to the next node if a valid one was found
         if (nextNode) {
-            tour.push_back(nextNode);
-            visited.insert(nextNode);
-            currentTime = std::max(currentTime + calculateDistance(currentNode, nextNode), nextNode->timeWindow.start);
+            route.emplace_back(nextNode, canVisit, currentTime);
+            nextNode->visited = true;
+            currentTime += calculateDistance(currentNode, nextNode);
             currentNode = nextNode;
-        } else {
-            //std::cerr << "Warning: No feasible next node due to time window constraints or blocked paths." << std::endl;
+        }
+        else {
             break;
         }
     }
 
     // Return to start if possible
-    if (tour.size() == graph->nodes.size() && !graph->getNeighbors(currentNode).empty()) {
-        tour.push_back(startNode);
+    if (const Edge* returnEdge = graph->findEdge(currentNode, startNode); !returnEdge || returnEdge->blocked) {
+        return route;
     }
-
-    return tour;
+    currentTime += calculateDistance(currentNode, startNode);
+    route.emplace_back(startNode, true, currentTime);
+    return route;
 }
-
-

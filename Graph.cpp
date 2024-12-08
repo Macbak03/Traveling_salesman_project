@@ -21,9 +21,27 @@ std::vector<Node*> Graph::getNeighbors(const Node* node) const {
     for (const auto edge : edges) {
         if (edge->start == node) {
             neighbors.push_back(edge->end);
+        } else if (edge->end == node) {
+            neighbors.push_back(edge->start);
         }
     }
     return neighbors;
+}
+
+Edge* Graph::findEdge(const Node* startNode, const Node* endNode) const {
+    for (auto* edge : edges) {
+        if ((edge->start == startNode && edge->end == endNode) ||
+            (edge->end == startNode && edge->start == endNode)) {
+            return edge;
+            }
+    }
+    return nullptr; // No edge found
+}
+
+void Graph::unvisitNodes() {
+    for (const auto node : nodes) {
+        node->visited = false;
+    }
 }
 
 void Graph::blockRandomEdges(const double percentage) const {

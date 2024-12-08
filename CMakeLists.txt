@@ -20,4 +20,8 @@ add_executable(traveling_salesman_project main.cpp
         BruteForce.h
         Algorithm.cpp
         Algorithm.cpp
-        Algorithm.h)
+        Algorithm.h
+        NodeInfo.cpp
+        NodeInfo.h
+        SimulatedAnnealing.cpp
+        SimulatedAnnealing.h)
